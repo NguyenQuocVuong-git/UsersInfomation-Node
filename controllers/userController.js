@@ -1,4 +1,11 @@
 const UserModel = require("../model/userModel");
+const {
+  checkName,
+  checkEmail,
+  checkAge,
+  checkPhone,
+  isEmpty,
+} = require("../auth/auth_valid");
 
 module.exports = {
   getAllUser: async function (req, res, next) {
@@ -12,10 +19,10 @@ module.exports = {
   updateUser: async function (req, res, next) {
     const { name, age, phone, email, key } = req.body || null;
     const chekAll =
-      checkName(name) != null ||
-      checkEmail(email) != null ||
-      checkAge(age) != null ||
-      checkPhone(phone) != null ||
+      checkName(name) ||
+      checkEmail(email) ||
+      checkAge(age) ||
+      checkPhone(phone) ||
       isEmpty(key);
     if (chekAll) {
       res
@@ -44,10 +51,10 @@ module.exports = {
   createUser: async function (req, res, next) {
     const { name, age, phone, email } = req.body || null;
     const chekAll =
-      checkName(name) != null ||
-      checkEmail(email) != null ||
-      checkAge(age) != null ||
-      checkPhone(phone) != null;
+      checkName(name) ||
+      checkEmail(email) ||
+      checkAge(age) ||
+      checkPhone(phone);
     if (chekAll) {
       res.status(400).json({
         status: false,
@@ -72,7 +79,9 @@ module.exports = {
             status: false,
             err: "An error occurred during account creation",
           });
-        res.status(200).json({ status: true, mess: "Account successfully created" });
+        res
+          .status(200)
+          .json({ status: true, mess: "Account successfully created" });
       }
     }
   },
