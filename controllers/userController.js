@@ -6,6 +6,7 @@ const {
   checkPhone,
   isEmpty,
 } = require("../auth/auth_valid");
+
 module.exports = {
   getAllUser: async function (req, res, next) {
     const allUser = await UserModel.find();
@@ -18,10 +19,10 @@ module.exports = {
   updateUser: async function (req, res, next) {
     const { name, age, phone, email, key } = req.body || null;
     const chekAll =
-      checkName(name) != null ||
-      checkEmail(email) != null ||
-      checkAge(age) != null ||
-      checkPhone(phone) != null ||
+      !checkName(name) ||
+      !checkEmail(email) ||
+      !checkAge(age) ||
+      !checkPhone(phone) ||
       isEmpty(key);
     if (chekAll) {
       res
@@ -44,6 +45,43 @@ module.exports = {
         });
       } else {
         res.status(200).json({ status: true, mess: "Update successful" });
+      }
+    }
+  },
+  createUser: async function (req, res, next) {
+    const { name, age, phone, email } = req.body || null;
+    const chekAll =
+      !checkName(name) ||
+      !checkEmail(email) ||
+      !checkAge(age) ||
+      !checkPhone(phone);
+    if (chekAll) {
+      res.status(400).json({
+        status: false,
+        err: "Wrong information cannot create an account",
+      });
+    } else {
+      const isEmailExist = await UserModel.findOne({ email });
+      if (isEmailExist) {
+        res.status(400).json({
+          status: false,
+          err: "This email has been previously registered, please choose another email",
+        });
+      } else {
+        const createUser = await UserModel.create({
+          name,
+          age,
+          phone,
+          email,
+        });
+        if (!createUser)
+          res.status(400).json({
+            status: false,
+            err: "An error occurred during account creation",
+          });
+        res
+          .status(200)
+          .json({ status: true, mess: "Account successfully created" });
       }
     }
   },
