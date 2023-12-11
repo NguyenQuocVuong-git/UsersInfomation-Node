@@ -19,10 +19,10 @@ module.exports = {
   updateUser: async function (req, res, next) {
     const { name, age, phone, email, key } = req.body || null;
     const chekAll =
-      !checkName(name) ||
-      !checkEmail(email) ||
-      !checkAge(age) ||
-      !checkPhone(phone) ||
+      checkName(name) ||
+      checkEmail(email) ||
+      checkAge(age) ||
+      checkPhone(phone) ||
       isEmpty(key);
     if (chekAll) {
       res
@@ -51,10 +51,10 @@ module.exports = {
   createUser: async function (req, res, next) {
     const { name, age, phone, email } = req.body || null;
     const chekAll =
-      !checkName(name) ||
-      !checkEmail(email) ||
-      !checkAge(age) ||
-      !checkPhone(phone);
+      checkName(name) ||
+      checkEmail(email) ||
+      checkAge(age) ||
+      checkPhone(phone);
     if (chekAll) {
       res.status(400).json({
         status: false,

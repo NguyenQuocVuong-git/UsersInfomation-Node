@@ -1,5 +1,5 @@
 /**Empty*/
-const { FORMAT_EMAIL,FORMAT_NAME } = require("../constant");
+const { FORMAT_EMAIL, FORMAT_NAME } = require("../constant");
 
 function isEmpty(val) {
   return val == null || val === "" || val == false;
@@ -10,9 +10,7 @@ module.exports = {
     if (isEmpty(email) || !FORMAT_EMAIL.test(email)) return true;
     return false;
   },
-  isEmpty: function (val) {
-    return val == null || val === "" || val == false;
-  },
+  isEmpty,
   checkName: function (name) {
     if (isEmpty(name) || !FORMAT_NAME.test(name)) return true;
     return false;
