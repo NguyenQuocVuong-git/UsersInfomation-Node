@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
-
+const userRouter = require("./router/userRouter.js")
 const app = express();
 
 mongoose.Promise = global.Promise;
@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(bodyParser.json())
 
+app.use("/user",userRouter)
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
 }).then(() => {
