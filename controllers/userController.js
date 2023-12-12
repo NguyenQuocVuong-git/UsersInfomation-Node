@@ -16,6 +16,28 @@ module.exports = {
       res.status(200).json({ allUser });
     }
   },
+  deleteUser: async function (req, res, next) {
+    const id = req.params.id;
+    if (isEmpty(id)) {
+      res.status(400).json({
+        status: false,
+        err: "The account to be deleted was not found",
+      });
+    } else {
+      const deleteUser = await UserModel.findOneAndDelete({ _id: id });
+      if (!deleteUser) {
+        res.status(400).json({
+          status: false,
+          err: "The account to be deleted was not found",
+        });
+      } else {
+        res.status(200).json({
+          status: true,
+          mess: "Account deleted successfully",
+        });
+      }
+    }
+  },
   updateUser: async function (req, res, next) {
     const { name, age, phone, email, key } = req.body || null;
     const chekAll =
