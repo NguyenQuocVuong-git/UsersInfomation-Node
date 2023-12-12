@@ -4,6 +4,7 @@ const {
   checkEmail,
   checkAge,
   checkPhone,
+  checkPassWord,
   isEmpty,
 } = require("../auth/auth_valid");
 
@@ -49,12 +50,16 @@ module.exports = {
     }
   },
   createUser: async function (req, res, next) {
-    const { name, age, phone, email } = req.body || null;
+    const { name, age, phone, email, password, passwordConfirm } =
+      req.body || null;
     const chekAll =
       checkName(name) ||
       checkEmail(email) ||
       checkAge(age) ||
-      checkPhone(phone);
+      checkPhone(phone) ||
+      checkPassWord(password) ||
+      checkPassWord(passwordConfirm) ||
+      passwordConfirm != password;
     if (chekAll) {
       res.status(400).json({
         status: false,
@@ -73,6 +78,7 @@ module.exports = {
           age,
           phone,
           email,
+          password,
         });
         if (!createUser)
           res.status(400).json({
@@ -85,15 +91,16 @@ module.exports = {
       }
     }
   },
-
   findByKeyword: async function (req, res, next) {
     try {
       const query = req.query.key;
-      const items = await UserModel.find({ name: { $regex: query, $options: 'i' } });
+      const items = await UserModel.find({
+        name: { $regex: query, $options: "i" },
+      });
       res.status(200).json({ items });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: "Internal Server Error" });
     }
-  }
+  },
 };
