@@ -24,16 +24,17 @@ module.exports = {
         err: "The account to be deleted was not found",
       });
     } else {
-      const deleteUser = await UserModel.findOneAndDelete({ _id: id });
-      if (!deleteUser) {
-        res.status(400).json({
-          status: false,
-          err: "The account to be deleted was not found",
-        });
-      } else {
+      try {
+        await UserModel.findOneAndDelete({ _id: id });
         res.status(200).json({
           status: true,
           mess: "Account deleted successfully",
+        });
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({
+          status: false,
+          err: "The account to be deleted was not found",
         });
       }
     }
