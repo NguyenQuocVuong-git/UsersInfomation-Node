@@ -13,5 +13,5 @@ router.put("/updateUser", updateUser);
 router.post("/createUser", createUser);
 router.delete("/deleteUser/:id", deleteUser);
 router.get("/findByKeyword", findByKeyword);
-router.get("/login", login);
+router.post("/login", login);
 module.exports = router;
