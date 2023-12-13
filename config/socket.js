@@ -8,7 +8,6 @@ const createSocketIO = (httpServer) => {
       credentials: true,
     },
   });
-
   io.on('connect', (socket) => {
     let users = [];
     for (let [id, s] of io.of("/").sockets) {
