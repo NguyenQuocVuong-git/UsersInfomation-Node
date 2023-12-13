@@ -31,7 +31,7 @@ mongoose.connect(dbConfig.url, {
 }).catch(err => {
     console.log('Could not connect to the database', err);
     process.exit();
-});
+  });
 
 app.get('/', (req, res) => {
     res.json({ "message": "Hello Crud Node Express" });
