@@ -24,7 +24,6 @@ const createSocketIO = (httpServer) => {
       socketId: socket.id,
       username: socket.handshake.auth.username,
     }
-    console.log(user);
     socket.emit('USER_INFO', user)
     socket.emit("FRIENDS_LIST", users);
     socket.broadcast.emit("FRIEND_CONNECTED", user);
