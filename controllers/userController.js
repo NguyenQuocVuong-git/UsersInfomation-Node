@@ -142,7 +142,7 @@ module.exports = {
             LOGIN_PRIVATE_KEY,
             { expiresIn: "1d" }
           );
-          res.status(200).json({ status: true, token });
+          res.status(200).json({ status: true, token, userLogin});
         }
       } catch (error) {
         console.log(error);
