@@ -20,6 +20,29 @@ module.exports = {
       res.status(200).json({ allUser });
     }
   },
+  deleteUser: async function (req, res, next) {
+    const id = req.params.id;
+    if (isEmpty(id)) {
+      res.status(400).json({
+        status: false,
+        err: "The account to be deleted was not found",
+      });
+    } else {
+      try {
+        await UserModel.findOneAndDelete({ _id: id });
+        res.status(200).json({
+          status: true,
+          mess: "Account deleted successfully",
+        });
+      } catch (error) {
+        console.log(error)
+        res.status(500).json({
+          status: false,
+          err: "The account to be deleted was not found",
+        });
+      }
+    }
+  },
   updateUser: async function (req, res, next) {
     const { name, age, phone, email, key } = req.body || null;
     const chekAll =
