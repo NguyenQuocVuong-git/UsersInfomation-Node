@@ -1,6 +1,7 @@
 const UserModel = require("../model/userModel");
 const bcrypt = require("bcrypt");
-const SALT_WORK_FACTOR = 10;
+const jwt = require("jsonwebtoken");
+const { SALT_WORK_FACTOR, LOGIN_PRIVATE_KEY } = require("../constant");
 
 const {
   checkName,
@@ -35,7 +36,7 @@ module.exports = {
           mess: "Account deleted successfully",
         });
       } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({
           status: false,
           err: "The account to be deleted was not found",
@@ -124,6 +125,31 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
+  login: async function (req, res, next) {
+    const { email, password } = req.query || null;
+    const checkAll = checkEmail(email) || checkPassword(password);
+    if (checkAll) {
+      res.status(400).json({ status: false, err: "Wrong login information." });
+    } else {
+      try {
+        const userLogin = await UserModel.findOne({ email });
+        if (userLogin) {
+          await bcrypt.compare(password, userLogin.password);
+          const token = jwt.sign(
+            { email: userLogin.email, id: userLogin._id },
+            LOGIN_PRIVATE_KEY,
+            { expiresIn: "1d" }
+          );
+          res.status(200).json({ status: true, token, userLogin});
+        }
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .json({ status: false, err: "Wrong login information." });
+      }
     }
   },
 };

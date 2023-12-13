@@ -4,4 +4,6 @@ module.exports = Object.freeze({
   FORMAT_NAME: /[a-zA-Z ]{1,30}$/,
   FORMAT_PASSWORD:
     /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])((?=.*[\!@#$%^&*()\\[\]{}\-_+=~`|:;"'<>,./?]).{2,}).{8,}/,
+  SALT_WORK_FACTOR: 10,
+  LOGIN_PRIVATE_KEY: 'jahsgdjhasd287561623$%#$#*^8767837GFDFKHJADs'
 });
