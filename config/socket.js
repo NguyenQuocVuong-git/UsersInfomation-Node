@@ -1,4 +1,5 @@
 const socketIO = require("socket.io");
+const {saveMessage} = require('../utils/index')
 
 const createSocketIO = (httpServer) => {
   const io = socketIO(httpServer, {
@@ -27,12 +28,13 @@ const createSocketIO = (httpServer) => {
     socket.emit('USER_INFO', user)
     socket.emit("FRIENDS_LIST", users);
     socket.broadcast.emit("FRIEND_CONNECTED", user);
-    socket.on("PRIVATE_MESSAGE", ({ from, content, to }) => {
+    socket.on("PRIVATE_MESSAGE", async ({ from, content, to }) => {
       io.to(to).emit("PRIVATE_MESSAGE", {
         from,
         content,
         to,
       });
+      await saveMessage({ content, sendBy: from, idUser1 : from, idUser2: to })
     });
   })
 };

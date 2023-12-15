@@ -8,6 +8,7 @@ const {
   findByKeyword,
   login,
 } = require("../controllers/userController");
+
 router.get("/getAllUser", getAllUser);
 router.put("/updateUser", updateUser);
 router.post("/createUser", createUser);

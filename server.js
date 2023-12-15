@@ -1,8 +1,9 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const dbConfig = require("./config/database.config.js");
-const mongoose = require("mongoose");
-const userRouter = require("./router/userRouter.js");
+const express = require('express');
+const bodyParser = require('body-parser');
+const dbConfig = require('./config/database.config.js');
+const mongoose = require('mongoose');
+const userRouter = require("./router/userRouter.js")
+const historyRouter = require('./router/historyChat.js')
 const http = require("http");
 
 const createSocketIO = require("./config/socket.js");
@@ -23,11 +24,11 @@ app.use(bodyParser.json());
 
 app.use("/user", userRouter);
 
-mongoose
-  .connect(dbConfig.url, {
-    useNewUrlParser: true,
-  })
-  .then(() => {
+app.use("/chat", historyRouter )
+
+mongoose.connect(dbConfig.url, {
+    useNewUrlParser: true
+}).then(() => {
     console.log("Databse Connected Successfully!!");
   })
   .catch((err) => {
