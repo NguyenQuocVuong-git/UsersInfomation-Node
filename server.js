@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 const userRouter = require("./router/userRouter.js")
+const historyRouter = require('./router/historyChat.js')
 const http = require("http");
 
 const createSocketIO = require("./config/socket.js")
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.use("/user", userRouter)
+app.use("/chat", historyRouter )
 
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true
