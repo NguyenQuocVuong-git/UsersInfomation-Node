@@ -15,14 +15,14 @@ const createSocketIO = (httpServer) => {
     for (let [id, s] of io.of("/").sockets) {
       if (id !== socket.id) {
         const user = {
-          socketId: id,
+          socketId: s.handshake.auth.id,
           username: s.handshake.auth.username,
         };
         users.push(user);
       }
     }
     const user = {
-      socketId: socket.id,
+      socketId: socket.handshake.auth.id,
       username: socket.handshake.auth.username,
     }
     socket.emit('USER_INFO', user)
