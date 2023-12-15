@@ -7,7 +7,7 @@ const userModel = new mongoose.Schema({
   age: { type: Number, require: true },
   phone: { type: String, require: true },
   name: { type: String, require: true },
-  password:{type: String, require: true}
+  password: { type: String, require: true },
 });
 
 userModel.pre("save", async function (next) {
