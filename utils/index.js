@@ -13,13 +13,12 @@ function validateFields(fields) {
 }
 
 async function saveMessage({ content, sendBy, idUser1, idUser2 }) {
-  const res = await historyChatModel.create({
+ await historyChatModel.create({
     content,
     sendBy,
     idUser1,
     idUser2
   })
-  console.log('res', res)
 }
 
 module.exports = {
