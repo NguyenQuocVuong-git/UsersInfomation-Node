@@ -128,7 +128,7 @@ module.exports = {
     }
   },
   login: async function (req, res, next) {
-    const { email, password } = req.query || null;
+    const { email, password } = req.body || null;
     const checkAll = checkEmail(email) || checkPassword(password);
     if (checkAll) {
       res.status(400).json({ status: false, err: "Wrong login information." });
