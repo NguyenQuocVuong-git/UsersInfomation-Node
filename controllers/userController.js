@@ -128,7 +128,6 @@ module.exports = {
     }
   },
   login: async function (req, res, next) {
-    console.log(req.body)
     const { email, password } = req.body || null;
     const checkAll = checkEmail(email) || checkPassword(password);
     if (checkAll) {
