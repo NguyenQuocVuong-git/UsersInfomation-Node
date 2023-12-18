@@ -169,4 +169,24 @@ module.exports = {
       }
     }
   },
+  logout: async function (req, res, next) {
+    const { _id, token } = req.body;
+    if (isEmpty(_id) || isEmpty(token)) {
+      res.status(400).json({ status: false, err: "Wrong information." });
+    } else {
+      try {
+        const userLogout = await UserModel.findOne({ _id });
+        if (userLogout) {
+          userLogout.token = userLogout.token == token ? "": userLogout.token;
+          userLogout.save()
+          res.status(200).json({ status: true, mess:"Logout succsessfully" });
+        }
+      } catch (error) {
+        console.log(error);
+        res
+          .status(500)
+          .json({ status: false, err: "Wrong information." });
+      }
+    }
+  },
 };
