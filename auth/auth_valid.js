@@ -28,4 +28,8 @@ module.exports = {
     if (isEmpty(phone)) return true;
     return false;
   },
+  checkPassWord: function (password) {
+    if (isEmpty(password) || !FORMAT_PASSWORD.test(password)) return true;
+    return false;
+  }
 };
