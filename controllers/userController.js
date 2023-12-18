@@ -96,20 +96,30 @@ module.exports = {
       try {
         const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
         const passwordHash = await bcrypt.hash(password, salt);
-        const userLogin = await UserModel.create({
-          name,
-          age,
-          phone,
-          email,
-          password: passwordHash,
-        });
-        if (userLogin) {
-          const token = jwt.sign(
-            { email: userLogin.email, id: userLogin._id },
-            LOGIN_PRIVATE_KEY,
-            { expiresIn: "1d" }
-          );
-          res.status(200).json({ status: true, token, userLogin });
+        const emailIsExits = await UserModel.findOne({ email });
+        if (emailIsExits) {
+          res.status(400).json({
+            status: false,
+            err: "This email has been registered. Please choose another email.",
+          });
+        } else {
+          const userLogin = await UserModel.create({
+            name,
+            age,
+            phone,
+            email,
+            password: passwordHash,
+          });
+          if (userLogin) {
+            const token = jwt.sign(
+              { email: userLogin.email, id: userLogin._id },
+              LOGIN_PRIVATE_KEY,
+              { expiresIn: "1d" }
+            );
+            userLogin.token = token;
+            userLogin.save();
+            res.status(200).json({ status: true, token, userLogin });
+          }
         }
       } catch (error) {
         console.log(error);
@@ -147,6 +157,8 @@ module.exports = {
             LOGIN_PRIVATE_KEY,
             { expiresIn: "1d" }
           );
+          userLogin.token = token;
+          userLogin.save();
           res.status(200).json({ status: true, token, userLogin });
         }
       } catch (error) {
