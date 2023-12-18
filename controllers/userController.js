@@ -177,16 +177,37 @@ module.exports = {
       try {
         const userLogout = await UserModel.findOne({ _id });
         if (userLogout) {
-          userLogout.token = userLogout.token == token ? "": userLogout.token;
-          userLogout.save()
-          res.status(200).json({ status: true, mess:"Logout succsessfully" });
+          userLogout.token = userLogout.token == token ? "" : userLogout.token;
+          userLogout.save();
+          res.status(200).json({ status: true, mess: "Logout succsessfully" });
         }
       } catch (error) {
         console.log(error);
-        res
-          .status(500)
-          .json({ status: false, err: "Wrong information." });
+        res.status(500).json({ status: false, err: "Wrong information." });
       }
+    }
+  },
+  checkToken: async function (req, res, next) {
+    const { token, _id } = req.body;
+    if (isEmpty(token) || isEmpty(_id)) {
+      res.status(401).json({ status: false });
+    } else {
+      jwt.verify(token, LOGIN_PRIVATE_KEY, async function (err, decoded) {
+        if (err) {
+          res.status(401).json({ status: false });
+        } else {
+          try {
+            const getToken = await UserModel.findOne({ _id });
+            if (getToken._id == decoded.id) {
+              res.status(200).json({ status: true });
+            } else {
+              res.status(401).json({ status: false });
+            }
+          } catch (error) {
+            res.status(401).json({ status: false });
+          }
+        }
+      });
     }
   },
 };
