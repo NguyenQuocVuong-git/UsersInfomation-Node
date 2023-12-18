@@ -7,7 +7,8 @@ const {
   deleteUser,
   findByKeyword,
   login,
-  logout
+  logout,
+  checkToken
 } = require("../controllers/userController");
 
 router.get("/getAllUser", getAllUser);
@@ -17,5 +18,6 @@ router.delete("/deleteUser/:id", deleteUser);
 router.get("/findByKeyword", findByKeyword);
 router.post("/login", login);
 router.post("/logout", logout);
+router.post("/checkToken", checkToken);
 
 module.exports = router;
